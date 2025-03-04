@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Axios from "../Axios/Axios";
 
-const DestinationPage = ({ setplacesData,searchPlace }) => {
+const DestinationPage = ({ setplacesData,searchPlace,setfamousPlacePanel }) => {
   const [inputValue, setInputValue] = useState("");
   const [Suggestions, setSuggestions] = useState([])
   const [suggestionClick, setsuggestionClick] = useState(false)
@@ -13,12 +13,14 @@ const DestinationPage = ({ setplacesData,searchPlace }) => {
   }, [inputValue]);
 
   const getDestination = async () => {
+
     try {
       const response = await Axios.get(
-        `api/place/autocomplete/json?input=${encodeURIComponent(
+        `api/place/autocomplete/json?input=${
           inputValue
-        )}&key=${import.meta.env.VITE_API_KEY}`
+        }&key=${import.meta.env.VITE_API_KEY}`
       );
+            
       setSuggestions(response.data.predictions);
       
     } catch (err) {
@@ -37,11 +39,14 @@ const DestinationPage = ({ setplacesData,searchPlace }) => {
         onChange={(e) => {
           setsuggestionClick(false)
           setInputValue(e.target.value);
+          // setfamousPlacePanel(false)
+          
         }}
       />
       {
         suggestionClick ? <button onClick={()=>{
           searchPlace(inputValue)
+          // setfamousPlacePanel(true)
         }} className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md ml-10" >Find Famous Tourist Place </button>  : ""
       }
         </div>
